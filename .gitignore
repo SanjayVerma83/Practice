@@ -1,0 +1,9 @@
+﻿target/
+test-output/
+ExtentReports/
+.idea/
+*.class
+.classpath
+.project
+.settings/
+logs/

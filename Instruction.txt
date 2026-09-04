@@ -1,0 +1,89 @@
+Project Notes
+
+This document summarizes the changes made to complete the assignment and provides instructions to run the project.
+
+
+1. The runner's glue path was pointing to the wrong package (AutomationTest.qumu), so Cucumber couldn't find the step definitions. Updated it to the correct package.
+
+2. Updated the Cucumber runner to use the plugin attribute instead of the deprecated format attribute for reporting.
+
+3. Cleaned the pom.xml by removing outdated and unnecessary dependencies. Also updated TestNG, REST Assured, and WebDriverManager to compatible versions.
+
+4. Since I was using Java 21 locally, I updated the compiler configuration and added the required JVM --add-opens arguments to avoid reflection issues with the older Cucumber/XStream libraries.
+
+5. Updated TestData.properties to use the SauceDemo URL instead of StackOverflow, as required for the UI tests.
+
+6. Changed the browser configuration from chromeMac to Chrome.
+
+7. Fixed a Cucumber arity mismatch by adding the missing DataTable parameter to the step definition.
+
+8. Renamed the loginUnsuccessfully step method to a more generic name because it is used for both successful and unsuccessful login scenarios.
+
+9. Removed the old hardcoded ChromeDriver path since WebDriverManager automatically manages the browser driver.
+
+10. Created an APIBase class to keep the common REST Assured configuration (base URL, headers, etc.) in one place.
+
+11. Added the required x-api-key header for ReqRes API requests.
+
+12. Implemented all the required API scenarios using REST Assured (Get Users, Single User, Create User, Login, etc.).
+
+13. Added assertions to validate status codes, response body fields, user count, unique IDs, login token, and error messages.
+
+14. Created the required Page Object classes:
+    - LoginPage
+    - ProductsPage
+    - CartPage
+    - CheckoutPage
+    - CheckoutOverviewPage
+
+15. Implemented the complete UI workflow including login, adding products, cart validation, removing products, checkout, item total validation, and tax validation.
+
+16. Updated the browser hooks so they run only for UI scenarios using @UI tags instead of launching a browser for API scenarios.
+
+17. Moved the Base URL and API key into TestData.properties instead of hardcoding them.
+
+18. Executed the test suite multiple times and verified the TestNG and Cucumber reports.
+
+19. Verified that all API and UI scenarios are passing successfully.
+
+
+How to Run the Project
+
+Option 1: Run using TestNG (Recommended)
+
+1. Import the project as a Maven Project.
+2. Right-click the project → Maven → Update Project.
+3. Ensure all Maven dependencies are downloaded successfully.
+4. Right-click testng.xml. 
+5. Right-click testng.xml → Run As → Run Configurations.
+6. In the Arguments tab, add the following VM arguments:
+
+--add-opens java.base/java.util=ALL-UNNAMED
+--add-opens java.base/java.lang.reflect=ALL-UNNAMED
+--add-opens java.base/java.text=ALL-UNNAMED
+--add-opens java.desktop/java.awt.font=ALL-UNNAMED
+
+7. Click Apply and then Run.
+Note: The project was developed using Java 21. If running the project from Eclipse using testng.xml, please add the following VM arguments:
+
+This will execute both the API and UI scenarios and generate the reports.
+
+Option 2: Run using Maven
+
+Open Command Prompt in the project root directory and run:
+
+mvn clean test
+
+This command will:
+- Clean the previous build.
+- Compile the project.
+- Execute all TestNG/Cucumber tests.
+- Generate the TestNG and Cucumber reports.
+Note:When running with "mvn clean test", these JVM arguments are already configured in the Maven Surefire plugin, so no additional VM arguments are required.
+
+Prerequisites
+
+- Java 21
+- Maven 3.9+
+- Google Chrome (latest version)
+- Internet connection (for ReqRes API and SauceDemo)
